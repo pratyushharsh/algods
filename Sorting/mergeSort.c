@@ -2,43 +2,53 @@
 #include <stdio.h>
 
 
-void merge(int *a, int s, int e) {
-    int mid = (s+e)/2;
+void merge(int arr[], int l, int m, int r) {
 
-    int i = s;
-    int j = mid+1;
-    int k = s;
+   int n1 = m-l+1;
+   int n2 = r-m;
 
-    int temp[100];
+    // Declare two empty array
+   int L[n1]; int R[n2];
 
-    // Merge the array
-    while (i<=mid && j<=e) {
-        if(a[i] < a[j]) {
-            temp[k++] = a[i++];
-        } else {
-            temp[k++] = a[j++];
-        }
+   int i, j, k;
+
+    // Copy data from the array
+   for(i = 0; i < n1; i++) {
+       L[i] = arr[l+i];
+   }
+
+   for(j = 0; j < n2; j++) {
+       R[j] = arr[m+j+1];
+   }
+
+   i = 0;
+   j = 0;
+   k = l;
+
+   while(i < n1 && j < n2) {
+        if (L[i] <= R[j])
+            arr[k++] = L[i++];
+        else
+            arr[k++] = R[j++];
+   }
+
+   // Copy the remaining elements of L[], if there are any
+    while (i < n1)
+    {
+        arr[k++] = L[i++];
     }
 
-    // Add the remaining directly to the temp array
-    while (i<=mid) {
-        temp[k++] = a[i++];
-    }
-
-    while (j<=e) {
-        temp[k++] = a[j++];
-    }
-
-    // Copy all the element to the original element
-    for(int i = s; i < e; i++) {
-        a[i] = temp[i];
+    // Copy the remaining elements of R[], if there are any
+    while (j < n2)
+    {
+        arr[k++] = R[j++];
     }
 
 }
 
 void mergeSort(int *a, int p, int q) {
 
-    if(p>= q){
+    if(p >= q){
         return;
     }
     // 1. Divide
@@ -49,21 +59,20 @@ void mergeSort(int *a, int p, int q) {
     mergeSort(a, mid+1, q);
 
     // 3. Merge
-    merge(a, p, q);
+    merge(a, p, mid, q);
 }
 
-//int main() {
-//    int n;
-//    printf("Enter the number of element to be sorted - ");
-//    scanf("%d", &n);
-//    int a[n];
-//    generateRandomIntArray(a, n);
-//    printArray(a, n);
-//
-//    mergeSort(a, 0, n);
-//
-//    printf("\nSorted array is\n");
-//    printArray(a, n);
-//
-//    return 0;
-//}
+int main() {
+    int n;
+    printf("Enter the number of element to be sorted - ");
+    scanf("%d", &n);
+    int a[n];
+    generateRandomIntArray(a, n);
+    printArray(a, n);
+
+    mergeSort(a, 0, n-1);
+    printf("\nSorted array is\n");
+    printArray(a, n);
+
+    return 0;
+}
