@@ -2,7 +2,7 @@
 // Created by Pratyush Harsh on 6/15/2018.
 //
 
-
+#include "random.c"
 #include <stdio.h>
 
 void swap(int *a, int *b) {
@@ -11,7 +11,7 @@ void swap(int *a, int *b) {
     *b = temp;
 }
 
-int* insertionSort(int arr[], int size) {
+void insertionSort(int *arr, int size) {
     int counter = 1;
     while(counter) {
         counter = 0;
@@ -22,15 +22,38 @@ int* insertionSort(int arr[], int size) {
             }
         }
     }
+}
 
-    return arr;
+// Insertion Sort Using Recurssion
+
+void insertionSortRecursion(int arr[], int n) {
+    if (n <= 1)
+        return;
+    insertionSortRecursion(arr, n-1);
+
+    // Insert last elmrnt at its correct place
+    int last = arr[n-1];
+    int j = n-2;
+
+    while(j >= 0 && arr[j] > last) {
+        arr[j+1] = arr[j];
+        j--;
+    }
+    arr[j+1] = last;
 }
 
 
+int main() {
+    int n;
+    printf("Enter the number of element to be sorted - ");
+    scanf("%d", &n);
+    int a[n];
+    generateRandomIntArray(a, n);
+    printArray(a, n);
 
-void printArray(int* arr, int size) {
-    for(int i = 0; i < size; i++) {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
+    insertionSortRecursion(a, n);
+    printf("\nSorted array is\n");
+    printArray(a, n);
+
+    return 0;
 }
